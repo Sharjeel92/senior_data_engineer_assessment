@@ -9,7 +9,7 @@ Writing comprehesive tests are critical when submitting your solution.
 
 <ol>1.  SQL</ol>
 
-<ul>In this respository is a subset of clinician data.  This data contains Hold slots within a given clinicians calendar.  </br> Using the below details - Write a query that expands the [available_block_rules.csv](https://github.com/bridgetlandis/senior_data_engineer_assessment/files/6756312/available_block_rules.csv)
+<ul>In this respository is a subset of clinician data.  This data contains Hold slots within a given clinicians calendar.  </br> Using the below details - Write a query that expands the [hold_block_rules.csv](https://github.com/bridgetlandis/senior_data_engineer_assessment/blob/main/hold_block_rules.csv)
  holds and blocks for day.</br>  Things you will need to know: 
 
 <ul> 1.  Rule Type Definitions: 
