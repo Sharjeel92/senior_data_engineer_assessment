@@ -1,0 +1,54 @@
+--Syed Sharjeelullah
+
+--To create a new database in postgresql
+CREATE DATABASE myinterviewdb OWNER postgres;
+
+--To create a new table for hold-block-rules.csv file
+CREATE TABLE public.clinicians_hold_rules
+(
+    rule_id bigint NOT NULL,
+    provider_id bigint NOT NULL,
+    start_date_time character varying(50) NOT NULL,
+    end_date_time character varying(50) NOT NULL,
+    rule_type boolean NOT NULL,
+    availability_type bigint NOT NULL,
+    rule_text character varying(100) NOT NULL
+);
+
+ALTER TABLE IF EXISTS public.clinicians_hold_rules
+    OWNER to postgres;
+
+--Lets load the csv file into the new table now
+COPY clinicians_hold_rules
+FROM '/Users/sharjeel/Documents/hold-block-rules.csv'
+DELIMITER ','
+CSV HEADER;
+
+--Expanding the hold times and blocked times for all the clinicians calendars
+;with all_combinations as (
+select chr.rule_id,
+	chr.provider_id, chr.rule_type,
+	chr.availability_type, all_dates::date AS start_date,
+	substring(chr.start_date_time, 12, 5) as start_time,
+	substring(chr.end_date_time, 12, 5) as end_time
+from clinicians_hold_rules chr
+JOIN LATERAL GENERATE_SERIES(TO_TIMESTAMP(chr.start_date_time, 'DD-MM-YYYY HH24:MI') ,
+							 TO_TIMESTAMP(chr.end_date_time, 'DD-MM-YYYY HH24:MI')  , INTERVAL '1 day') all_dates ON true
+order by start_date
+),
+
+aggregations as (
+select distinct(ac.start_date)::date as dates, ac.provider_id,
+CASE WHEN ac.availability_type = 1 THEN STRING_AGG(ac.start_time || '-' || ac.end_time, ', ') END as hold_times,
+CASE WHEN ac.availability_type = 2 THEN STRING_AGG(ac.start_time || '-' || ac.end_time, ', ') END as blocked_times
+from all_combinations ac
+group by 1,2, ac.availability_type
+order by dates
+	)
+
+select distinct a.dates, a.provider_id, b.hold_times, c.blocked_times from aggregations a
+LEFT JOIN aggregations b
+ON a.dates = b.dates AND b.hold_times IS NOT NULL
+LEFT JOIN aggregations c
+ON a.dates = c.dates AND c.blocked_times IS NOT NULL
+ORDER BY a.dates

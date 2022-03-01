@@ -1,0 +1,78 @@
+-- Production database design
+-- Here we have 2 tables which are datamarts and then 2 derived tables called unique_providers and unique_clinicians
+-- The derived tables contain only:
+-- 1. Primary KEY
+-- 2. id to match it to providers_mart and/or clinicians_mart tables
+-- 3. NPI's with digits after the '-'
+-- 4. Clinician's titles
+-- 5. Filtered to contain only unique NPIs
+
+CREATE TABLE prod.unique_providers
+(
+		id SERIAL,
+    provider_internal_id int NOT NULL,
+    "NPI" character varying(7) NOT NULL,
+    title character varying(50),
+		created_at timestamp,
+    PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+);
+
+CREATE TABLE prod.unique_clinicians
+(
+		id SERIAL,
+    clinician_internal_id int NOT NULL,
+    "NPI" character varying(7) NOT NULL,
+    title character varying(50),
+		created_at timestamp,
+    PRIMARY KEY (id)
+)
+WITH (
+    OIDS = FALSE
+);
+
+
+CREATE TABLE prod.providers_mart
+(
+    provider_internal_id SERIAL,
+    first_name character varying(100),
+    last_name character varying(100),
+    email character varying(100),
+    gender character varying(50),
+    care_center character varying(100),
+    languages character varying(100),
+    "NPI" character varying(15),
+    title character varying(50),
+		row_inserted_at timestamp,
+		row_updated_at timestamp,
+		provider_staging_id int NOT NULL,
+    PRIMARY KEY (provider_internal_id)
+)
+WITH (
+    OIDS = FALSE
+);
+
+
+
+	CREATE TABLE prod.clinicians_mart
+(
+    clinician_internal_id SERIAL,
+    first_name character varying(100),
+    last_name character varying(100),
+    email character varying(100),
+    gender character varying(50),
+    care_center character varying(100),
+    languages character varying(100),
+    "NPI" character varying(15),
+    title character varying(50),
+		updated_date character varying(20),
+		row_inserted_at timestamp,
+		row_updated_at timestamp,
+	  clinician_staging_id int NOT NULL,
+    PRIMARY KEY (clinician_internal_id)
+)
+WITH (
+    OIDS = FALSE
+);
