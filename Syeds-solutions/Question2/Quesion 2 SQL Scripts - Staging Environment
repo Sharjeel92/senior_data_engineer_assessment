@@ -1,0 +1,43 @@
+CREATE TABLE public.providers
+(
+    provider_staging_id SERIAL,
+    id bigint,
+    first_name character varying(100),
+    last_name character varying(100),
+    email character varying(100),
+    gender character varying(50),
+    care_center character varying(100),
+    languages character varying(100),
+    "NPI" character varying(15),
+    title character varying(50),
+  	row_inserted_at timestamp,
+  	row_updated_at timestamp,
+  	status varchar(100),
+    PRIMARY KEY (provider_staging_id)
+)
+WITH (
+    OIDS = FALSE
+);
+
+
+CREATE TABLE public.clinicians
+(
+    clinician_staging_id SERIAL,
+    id bigint,
+    first_name character varying(100),
+    last_name character varying(100),
+    email character varying(100),
+    gender character varying(50),
+    care_center character varying(100),
+    languages character varying(100),
+    "NPI" character varying(15),
+    title character varying(50),
+  	updated_date character varying(20),
+  	row_inserted_at timestamp,
+  	row_updated_at timestamp,
+  	status varchar(100),
+    PRIMARY KEY (clinician_staging_id)
+)
+WITH (
+    OIDS = FALSE
+);
