@@ -1,0 +1,57 @@
+--Test Cases
+--If the table was created successfully
+-- Execute these scripts below in postgresql (till line 47)
+-- Then run sample tests in lines 50 to 57
+
+create or replace function test_table_creation() returns varchar
+language plpgsql
+as
+$$
+declare 
+noticemsg varchar(50);
+begin
+SELECT INTO noticemsg (
+SELECT CASE WHEN (
+SELECT EXISTS (
+   SELECT FROM information_schema.tables 
+   WHERE  table_schema = 'public'
+   AND    table_name   = 'clinicians_hold_rules'
+   )) IS TRUE THEN 'Test Passed: table created successfully' ELSE 'Test Failed: table was NOT created successfully' END); 
+
+raise notice 'Value: %', noticemsg;
+
+return noticemsg;
+end;
+$$
+
+
+
+create or replace function test_data_insertion(n int) returns varchar
+language plpgsql
+as
+$$
+declare 
+noticemsg varchar(50);
+begin
+TRUNCATE TABLE clinicians_hold_rules;
+INSERT INTO clinicians_hold_rules 
+SELECT generate_series(1,n) AS rule_id, '2' AS rule_id, '30-05-2022 09:00' as start_date_time, 
+'30-05-2022 12:00' as end_date_time, False as rule_type, 1 as availability_type,  
+md5(random()::text);
+
+SELECT INTO noticemsg CASE WHEN (select COUNT(*) from clinicians_hold_rules) = n THEN 'Test Passed' ELSE 'Test Failed' END;
+raise notice 'Value: %', noticemsg;
+
+return noticemsg;
+end;
+$$
+
+
+-- Running Tests
+
+--Test out the table creation function
+
+select * from test_table_creation()
+
+--Testing the insertion of test data, by passing the number of rows to be added to the table
+select * from test_data_insertion(20);
