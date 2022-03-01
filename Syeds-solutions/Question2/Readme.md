@@ -1,4 +1,4 @@
-**Instructions on running the program
+####Instructions on running the program
 
 Please note that the staging and production databases are hosted on an Azure server, on my personal account. So in order to connect please update the credentials lines in line 16-31 of the notebook.
 The credentials file is sent in an email. This is dummy data so we should be fine using this approach.
@@ -14,4 +14,4 @@ To test the program:
 4. The program should display some logs and would store the final refined data in 'unique_providers' and 'unique_clinicians' tables.
 5. For verifying, you can also check the other staging and production environment tables.
 
-Note: I have made some assumptions that can be found in the notebook
+Note: I have made some assumptions that can be found in the notebook.
