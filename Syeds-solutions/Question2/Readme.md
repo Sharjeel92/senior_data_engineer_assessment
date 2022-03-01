@@ -6,7 +6,7 @@ The credentials file is sent in an email. This is dummy data so we should be fin
 The two '.numbers' extension files were first converted to csv and then placed in an Azure Storage blob, and the credentials to which are in the code. However, since the data is fake, and the account is my private Azure account, it should not be an issue for this test case.
 I strongly recommend against repeating this approach, as it is detrimental to data security and HIPAA compliance.
 
-To test the program:
+### To test the program:
 
 1. Update the credentials in line 16-31, from the file supplied in email.
 2. Just run the program in a spark-enabled environment.
