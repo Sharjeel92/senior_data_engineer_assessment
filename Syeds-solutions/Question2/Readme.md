@@ -4,7 +4,7 @@ Please note that the staging and production databases are hosted on an Azure ser
 
 The two '.numbers' extension files were first converted to csv and then placed in an Azure Storage blob, and the credentials to which are in the code. However, since the data is fake, and the account is my private Azure account, it should not be an issue for this test case. This kind of approach is otherwise highly unadvisable in a company setting.
 
-Please note, that the test cases can be found in the second cell of the jupyter notebook attached. (There are two files in this directory, one in HTML and the other in .ipynb extension, but they are the same program)
+Please note, that the test cases can be found in the second cell of the jupyter notebook attached.
 
 ### To test the program:
 
